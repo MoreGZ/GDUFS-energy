@@ -21,7 +21,7 @@
 			</div>
 			<div class="content-cover">
 				<span class="title">封面</span>
-				<div class="coverImg" v-show="mainData.coverurl!='undefined'">
+				<div class="coverImg" v-show="mainData.coverurl != 'undefined'">
 					<img :src="mainData.coverurl">
 				</div>
 				<div class="button-wrapper">
@@ -31,7 +31,7 @@
 					</button>
 					<input type="file" name=""  @change="uploadImg($event)">
 				</div>
-				<span class="note" v-show="mainData.coverurl=='undefined'">*如不设置将自动设置为默认图片</span>
+				<span class="note">*如不设置将自动设置为默认图片</span>
 			</div>
 			<div class="content-author">
 				<span class="title">编者</span>
@@ -47,6 +47,11 @@
 			</div>
 		</div>
 		<div class="edit-buttons">
+			<a 
+			href="http://app.xunjiepdf.com/pdf2jpg" 
+			style="float:left;color:#6da685;font-size:16px" 
+			target="_blank"
+			v-show="mainData.pushtype==3">转换pdf请点击这里</a>
 			<button class="margin-right" @click="preview">预览</button>
 			<button @click='saveAndDisplay'>保存并发布</button>
 		</div>
@@ -191,7 +196,7 @@ export default {
 
 				if(response.data.re == 3){
 					alert("请先登录系统");
-					location.replace("./loading.html");
+					location.replace("./login.html");
 				}
 
 				this.$refs.bomb1.alert();
@@ -221,7 +226,7 @@ export default {
 		},
 		changeKnowledgetype:function(value){
 			this.mainData.knowledgetype = value;
-			console.log(this.mainData);
+			// console.log(this.mainData);
 
 		},
 		editPush:function(id){
@@ -240,13 +245,30 @@ export default {
 			}
 		},
 		preview:function(){
+			this.mainData.content = this.editor.txt.html();
 			this.isPreview = true;
 		},
 		backFromPreview:function(){
 			this.isPreview = false;
 		},
 		saveAndDisplay:function(){
+
 			this.mainData.content = this.editor.txt.html();
+			if(this.mainData.title=='' || this.mainData.title=='undefined'){
+				alert("标题不能为空")
+				return;
+			}
+
+			if(this.mainData.content=='' || this.mainData.content=='undefined'){
+				alert("内容不能为空")
+				return;
+			}
+
+			if(this.mainData.author=='' || this.mainData.author=='undefined'){
+				alert("编者不能为空")
+				return;
+			}
+			// if(this.mainData.content)
 			this.$refs.bomb2.confirm("确认发布吗？");
 		},
 		sureDisplay:function(){
@@ -257,7 +279,7 @@ export default {
 				formData.append("title",this.mainData.title);
 				formData.append("author",this.mainData.author);
 				formData.append("coverurl",this.mainData.coverurl);
-				formData.append("knowledgetype",0);
+				formData.append("knowledgetype",this.mainData.knowledgetype);
 				formData.append("content",this.mainData.content);
 				this.$ajax.post("http://121.42.203.85/energycenter/public/api/admin/addPush",formData)
 				.then((response)=>{
@@ -268,7 +290,7 @@ export default {
 
 					if(response.data.re == 3){
 						alert("请先登录系统");
-						location.replace("./loading.html");
+						location.replace("./login.html");
 					}
 
 					this.$refs.bomb1.alert();
@@ -286,7 +308,7 @@ export default {
 				formData.append("title",this.mainData.title);
 				formData.append("author",this.mainData.author);
 				formData.append("coverurl",this.mainData.coverurl);
-				formData.append("knowledgetype",this.mainData.coverurl);
+				formData.append("knowledgetype",this.mainData.knowledgetype);
 				formData.append("content",this.mainData.content);
 				this.$ajax.post("http://121.42.203.85/energycenter/public/api/admin/updatePush",formData)
 				.then((response)=>{
@@ -297,7 +319,7 @@ export default {
 
 					if(response.data.re == 3){
 						alert("请先登录系统");
-						location.replace("./loading.html");
+						location.replace("./login.html");
 					}
 
 					this.$refs.bomb1.alert();
@@ -355,7 +377,7 @@ export default {
 
 				if(response.data.re == 3){
 					alert("请先登录系统");
-					location.replace("./loading.html");
+					location.replace("./login.html");
 				}
 
 				this.$refs.bomb1.alert();
@@ -393,7 +415,7 @@ export default {
             contentBox.style.left = '20px';
             contentBox.style.right = '20px';
             contentBox.style.bottom = '20px';
-            contentBox.style.height = '';
+            contentBox.style.height = '90%';
             
             cover.appendChild(toolbarBox)
             cover.appendChild(contentBox)

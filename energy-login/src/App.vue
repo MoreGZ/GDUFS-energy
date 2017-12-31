@@ -50,7 +50,7 @@ export default {
       this.$ajax.post("http://121.42.203.85/energycenter/public/api/admin/login",formData)
       .then((response)=>{
         if(response.data.re==0){
-          location.replace("./backstage.html");
+          location.replace("./backStage.html");
           return
         }
 
@@ -68,6 +68,10 @@ export default {
 
         this.alertText = "登录失败，请重试"
         this.$refs.bomb.alert();
+      })
+      .catch((error)=>{
+        console.log(error);
+        alert("不好意思，出现了问题，请稍后重试");
       })
     }
   }

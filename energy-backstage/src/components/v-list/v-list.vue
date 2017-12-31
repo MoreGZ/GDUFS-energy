@@ -3,11 +3,11 @@
 		<div class="mainListWrapper" ref='listWrapper'>
 			<ul class="list" :style='{width:listWidth}' v-show='!isload'>
 				<li v-for='(item,index) in listData[currentPage]'>
-					<p class="date">发表日期：{{item.update_time}}</p>
+					<p class="date">发表日期：{{item.create_time}}</p>
 					<p class="content">{{item.content | contentFilter}}</p>
 					<div class="img">
 						<img :src="item.coverurl | imgFilter">
-						<a :href="'./detail.html#/'+pushtype+'/'+item.id">
+						<a :href="'./detail.html#/'+pushtype+'/'+item.id" target="_blank">
 							<div class="cover">
 								<img src="./left.png" height="14" width="14" class="left">
 								<span>查看文章</span>
@@ -15,7 +15,7 @@
 							</div>
 						</a>
 					</div>
-					<p class="author">{{item.author}}</p>
+					<p class="author">编者: {{item.author}}</p>
 					<div class="button">
 						<button @click='editIt(item.id)'><img src="./edit.png" height="17" width="17">编辑</button>
 						<button @click='deleteIt(item.id)'><img src="./delete.png" height="17" width="17">删除</button>

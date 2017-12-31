@@ -11,7 +11,7 @@
     		</button>
     	</form>
     	<button class="add" v-show="isCanAdd" @click="addPush">
-    		<img src="./add.png" height="12" width="12">新增{{pushtypeMap2[pushtype]}}
+    		<img src="./add.png" height="12" width="12">新增{{pushtypeMap3[pushtype]}}
     	</button>
     </div>
     <div class="list-wrapper">
@@ -50,6 +50,7 @@ export default {
 			pushtype:1,
 			pushtypeMap:{'dynamic':1,'knowledge':2,'policy':3,'notice':4},
 			pushtypeMap2:['搜索','动态管理','节能知识管理','政策支持管理','通知管理'],
+			pushtypeMap3:['','动态','节能知识','政策支持','通知'],
 			isCanAdd:this.$route.params.type == 'search' ? false : true,
 			isshowNothing:false,
 			isShowEdit:false,
@@ -107,7 +108,7 @@ export default {
 
 				if(response.data.re == 3){
 					alert("请先登录系统");
-					location.replace("./loading.html");
+					location.replace("./login.html");
 				}
 
 				this.$refs.bomb1.alert();
@@ -138,7 +139,7 @@ export default {
 
 				if(response.data.re == 3){
 					alert("请先登录系统");
-					location.replace("./loading.html");
+					location.replace("./login.html");
 				}
 
 				this.$refs.bomb1.alert();
@@ -185,12 +186,13 @@ export default {
 				this.$ajax.post("http://121.42.203.85/energycenter/public/api/admin/deletePush",formData)
 				.then((response)=>{
 					if(response.data.re == 0){
+						location.reload();
 						return;
 					}
 
 					if(response.data.re == 3){
 						alert("请先登录系统");
-						location.replace("./loading.html");
+						location.replace("./login.html");
 					}
 
 					this.$refs.bomb1.alert();
